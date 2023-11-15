@@ -1,4 +1,4 @@
-export default function WelcomeWorld() {
+export default function Home() {
     return (
         <section id='welcome-world'>
             <div className='welcome-message'>
