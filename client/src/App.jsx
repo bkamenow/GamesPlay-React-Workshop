@@ -19,9 +19,8 @@ function App() {
                 <Route path='/create-game' element={<CreateGamePage />} />
                 <Route path='/edit-game' element={<EditGamePage />} />
                 <Route path='/catalogue' element={<Catalogue />} />
+                <Route path='/game-details/id' element={<GameDetails />} />
             </Routes>
-
-            <GameDetails />
         </div>
     );
 }

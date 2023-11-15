@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Catalogue() {
     return (
         <section id='catalog-page'>
@@ -7,9 +9,9 @@ export default function Catalogue() {
                     <img src='./images/avatar-1.jpg' />
                     <h6>Action</h6>
                     <h2>Cover Fire</h2>
-                    <a href='#' className='details-button'>
+                    <Link to='/game-details/id' className='details-button'>
                         Details
-                    </a>
+                    </Link>
                 </div>
             </div>
             <div className='allGames'>
@@ -17,9 +19,9 @@ export default function Catalogue() {
                     <img src='./images/avatar-1.jpg' />
                     <h6>Action</h6>
                     <h2>Zombie lang</h2>
-                    <a href='#' className='details-button'>
+                    <Link to='/game-details/id' className='details-button'>
                         Details
-                    </a>
+                    </Link>
                 </div>
             </div>
             <div className='allGames'>
@@ -27,9 +29,9 @@ export default function Catalogue() {
                     <img src='./images/avatar-1.jpg' />
                     <h6>Action</h6>
                     <h2>MineCraft</h2>
-                    <a href='#' className='details-button'>
+                    <Link to='/game-details/id' className='details-button'>
                         Details
-                    </a>
+                    </Link>
                 </div>
             </div>
 
