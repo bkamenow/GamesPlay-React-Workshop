@@ -11,7 +11,11 @@ export default function Catalogue() {
             try {
                 const gamesData = await fetchGames();
                 const gamesArray = Object.values(gamesData);
-                setGames(gamesArray);
+
+                // Reverse the order of the games array
+                const reversedGames = gamesArray.reverse();
+
+                setGames(reversedGames);
                 setLoading(false);
             } catch (error) {
                 setLoading(false);

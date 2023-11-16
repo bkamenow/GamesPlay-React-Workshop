@@ -21,12 +21,37 @@ export const fetchRecentGames = async () => {
             throw new Error("Failed to fetch recent games");
         }
         const data = await response.json();
-        // Assuming data is an object with game IDs as keys
         const gamesArray = Object.values(data);
-        const recentGames = gamesArray.slice(0, 3);
+
+        const reversedGames = gamesArray.reverse();
+
+        const recentGames = reversedGames.slice(0, 3);
+
         return recentGames;
     } catch (error) {
         console.error("Error fetching recent games:", error);
+        throw error;
+    }
+};
+
+export const createGame = async (gameData) => {
+    try {
+        const response = await fetch(`${baseURL}/jsonstore/games`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gameData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create game");
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error creating game:", error);
         throw error;
     }
 };

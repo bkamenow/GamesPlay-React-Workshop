@@ -15,8 +15,8 @@ export default function LoginPage() {
         userService
             .loginUser(email, password)
             .then(() => {
-                window.location.href = "/";
-                // navigate("/");
+                // window.location.href = "/";
+                navigate("/");
             })
             .catch((error) => {
                 setError("Invalid email or password");
