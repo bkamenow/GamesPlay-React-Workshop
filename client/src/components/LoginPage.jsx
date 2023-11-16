@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import * as userService from "../services/userService";
+
 export default function LoginPage() {
-    // const [currentUser, setCurrentUser] = useState();
+    const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("token");
-    //     if (token) {
-    //         setCurrentUser(true);
-    //     }
-    // }, []);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    // function submitLogin(e) {
-    //     e.preventDefault();
-    //     client.post("/login", { email, password }).then(storeTokenAndSetUser);
-    // }
+    function submitLogin(e) {
+        e.preventDefault();
+
+        userService
+            .loginUser(email, password)
+            .then(() => {
+                window.location.href = "/";
+                // navigate("/");
+            })
+            .catch((error) => {
+                setError("Invalid email or password");
+                console.error("Error during login:", error);
+            });
+    }
 
     return (
         <section id='login-page' className='auth'>
-            <form id='login'>
+            <form id='login' onSubmit={submitLogin}>
                 <div className='container'>
                     <div className='brand-logo'></div>
                     <h1>Login</h1>
@@ -27,6 +36,8 @@ export default function LoginPage() {
                         id='email'
                         name='email'
                         placeholder='Sokka@gmail.com'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
 
                     <label htmlFor='login-pass'>Password:</label>
@@ -34,13 +45,11 @@ export default function LoginPage() {
                         type='password'
                         id='login-password'
                         name='password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
-                    <input
-                        type='submit'
-                        className='btn submit'
-                        value='Login'
-                        // onClick={submitLogin}
-                    />
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    <input type='submit' className='btn submit' value='Login' />
                     <p className='field'>
                         <span>
                             If you don't have a profile click{" "}

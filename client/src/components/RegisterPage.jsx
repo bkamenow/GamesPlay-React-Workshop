@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as userService from "../services/userService";
 
@@ -8,43 +8,21 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [isEmailAvailable, setIsEmailAvailable] = useState(true);
-
-    useEffect(() => {
-        const checkEmailAvailability = async () => {
-            try {
-                // Call a function to check email availability on the server
-                const isAvailable = await userService.checkEmailAvailability(
-                    email
-                );
-                setIsEmailAvailable(isAvailable);
-            } catch (error) {
-                console.error("Error checking email availability:", error);
-            }
-        };
-
-        // Perform the check when the email changes
-        checkEmailAvailability();
-    }, [email]);
 
     function submitRegistration(e) {
         e.preventDefault();
 
-        // Check if passwords match and email is available
-        if (password !== confirmPassword || !isEmailAvailable) {
-            console.error("Passwords do not match or email is not available");
+        if (password !== confirmPassword) {
+            console.error("Passwords do not match");
             return;
         }
 
-        // Call the registerUser function
         userService
             .registerUser(email, password)
             .then(() => {
-                // Redirect to the login page after successful registration
                 navigate("/login");
             })
             .catch((error) => {
-                // Handle registration error
                 console.error("Error during registration:", error);
             });
     }
@@ -65,12 +43,6 @@ export default function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-
-                    {!isEmailAvailable && (
-                        <p style={{ color: "red" }}>
-                            This email is not available. Please choose another.
-                        </p>
-                    )}
 
                     <label htmlFor='pass'>Password:</label>
                     <input
