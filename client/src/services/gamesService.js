@@ -1,8 +1,8 @@
-const baseURL = "http://localhost:3030";
+const baseURL = "http://localhost:3030/jsonstore/games";
 
 export const fetchGames = async () => {
     try {
-        const response = await fetch(`${baseURL}/jsonstore/games`);
+        const response = await fetch(`${baseURL}`);
         if (!response.ok) {
             throw new Error("Failed to fetch games");
         }
@@ -16,7 +16,7 @@ export const fetchGames = async () => {
 
 export const fetchRecentGames = async () => {
     try {
-        const response = await fetch(`${baseURL}/jsonstore/games`);
+        const response = await fetch(`${baseURL}`);
         if (!response.ok) {
             throw new Error("Failed to fetch recent games");
         }
@@ -36,7 +36,7 @@ export const fetchRecentGames = async () => {
 
 export const createGame = async (gameData) => {
     try {
-        const response = await fetch(`${baseURL}/jsonstore/games`, {
+        const response = await fetch(`${baseURL}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -52,6 +52,21 @@ export const createGame = async (gameData) => {
         return data;
     } catch (error) {
         console.error("Error creating game:", error);
+        throw error;
+    }
+};
+
+export const getOneGame = async (gameId) => {
+    try {
+        const response = await fetch(`${baseURL}/${gameId}`);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch game with ID ${gameId}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching game details:", error);
         throw error;
     }
 };
