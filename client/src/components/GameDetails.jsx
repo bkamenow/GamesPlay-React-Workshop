@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import * as gamesService from "../services/gamesService";
+import * as commentService from "../services/commentService";
 
 export default function GameDetails() {
     const [gameDetails, setGameDetails] = useState({});
+    const [comments, setComments] = useState([]);
     const { gameId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         gamesService.getOneGame(gameId).then(setGameDetails);
+        commentService.getAll(gameId).then(setComments);
     }, [gameId]);
 
     const deleteGameHandler = async () => {
@@ -19,6 +22,20 @@ export default function GameDetails() {
         } catch (error) {
             console.error("Error deleting game:", error);
         }
+    };
+
+    const addCommentHandler = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const newComment = await commentService.create(
+            gameId,
+            formData.get("username"),
+            formData.get("comment")
+        );
+
+        setComments((state) => [...state, newComment]);
     };
 
     return (
@@ -43,14 +60,18 @@ export default function GameDetails() {
                 <div className='details-comments'>
                     <h2>Comments:</h2>
                     <ul>
-                        <li className='comment'>
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className='comment'>
-                            <p>Content: The best game.</p>
-                        </li>
+                        {comments.map(({ _id, username, text }) => (
+                            <li key={_id} className='comment'>
+                                <p>
+                                    {username}: {text}
+                                </p>
+                            </li>
+                        ))}
                     </ul>
-                    <p className='no-comment'>No comments.</p>
+
+                    {comments.length === 0 && (
+                        <p className='no-comment'>No comments.</p>
+                    )}
                 </div>
 
                 <div className='buttons'>
@@ -65,7 +86,7 @@ export default function GameDetails() {
 
             <article className='create-comment'>
                 <label>Add new comment:</label>
-                <form className='form'>
+                <form className='form' onSubmit={addCommentHandler}>
                     <textarea
                         name='comment'
                         placeholder='Comment......'
