@@ -92,3 +92,24 @@ export const updateGame = async (gameId, updatedGameData) => {
         throw error;
     }
 };
+
+export const deleteGame = async (gameId) => {
+    try {
+        const response = await fetch(`${baseURL}/${gameId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to delete game with ID ${gameId}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error deleting game:", error);
+        throw error;
+    }
+};

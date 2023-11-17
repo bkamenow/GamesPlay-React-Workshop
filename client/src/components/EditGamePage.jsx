@@ -15,7 +15,6 @@ export default function EditGamePage() {
         event.preventDefault();
 
         try {
-            // Get the updated data from the form (you may need to enhance this based on your form structure)
             const updatedGameData = {
                 title: event.target.title.value,
                 category: event.target.category.value,
@@ -24,13 +23,10 @@ export default function EditGamePage() {
                 summary: event.target.summary.value,
             };
 
-            // Update the game on the server
             await gamesService.updateGame(gameId, updatedGameData);
 
-            // Redirect to the game details page after successful update
             navigate(`/game/details/${gameId}`);
         } catch (error) {
-            // Handle error, show a message, or redirect to an error page
             console.error("Error updating game:", error);
         }
     };

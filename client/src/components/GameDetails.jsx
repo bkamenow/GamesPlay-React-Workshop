@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import * as gamesService from "../services/gamesService";
 
 export default function GameDetails() {
     const [gameDetails, setGameDetails] = useState({});
     const { gameId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         gamesService.getOneGame(gameId).then(setGameDetails);
     }, [gameId]);
+
+    const deleteGameHandler = async () => {
+        try {
+            await gamesService.deleteGame(gameId);
+
+            navigate("/catalogue");
+        } catch (error) {
+            console.error("Error deleting game:", error);
+        }
+    };
 
     return (
         <section id='game-details'>
@@ -46,9 +57,9 @@ export default function GameDetails() {
                     <Link to={`/game/edit/${gameId}`} className='button'>
                         Edit
                     </Link>
-                    <Link to='#' className='button'>
+                    <a href='#' className='button' onClick={deleteGameHandler}>
                         Delete
-                    </Link>
+                    </a>
                 </div>
             </div>
 
