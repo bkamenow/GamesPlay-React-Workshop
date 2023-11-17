@@ -70,3 +70,25 @@ export const getOneGame = async (gameId) => {
         throw error;
     }
 };
+
+export const updateGame = async (gameId, updatedGameData) => {
+    try {
+        const response = await fetch(`${baseURL}/${gameId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedGameData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update game with ID ${gameId}`);
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("Error updating game:", error);
+        throw error;
+    }
+};

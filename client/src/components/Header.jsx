@@ -20,7 +20,7 @@ export default function Header() {
                 <Link to='/catalogue'>All Games</Link>
                 {isLoggedIn ? (
                     <div id='user'>
-                        <Link to='/create-game'>Create Game</Link>
+                        <Link to='/game/create'>Create Game</Link>
                         <Link to='/' onClick={handleLogout}>
                             Logout
                         </Link>

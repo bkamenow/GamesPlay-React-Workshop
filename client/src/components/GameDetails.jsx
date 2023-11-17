@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as gamesService from "../services/gamesService";
 
 export default function GameDetails() {
@@ -43,12 +43,12 @@ export default function GameDetails() {
                 </div>
 
                 <div className='buttons'>
-                    <a href='#' className='button'>
+                    <Link to={`/game/edit/${gameId}`} className='button'>
                         Edit
-                    </a>
-                    <a href='#' className='button'>
+                    </Link>
+                    <Link to='#' className='button'>
                         Delete
-                    </a>
+                    </Link>
                 </div>
             </div>
 

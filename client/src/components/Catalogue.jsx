@@ -40,7 +40,7 @@ export default function Catalogue() {
                                 <h6>{game.category}</h6>
                                 <h2>{game.title}</h2>
                                 <Link
-                                    to={`/game-details/${game._id}`}
+                                    to={`/game/details/${game._id}`}
                                     className='details-button'
                                 >
                                     Details

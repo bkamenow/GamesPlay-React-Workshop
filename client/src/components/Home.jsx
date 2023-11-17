@@ -50,7 +50,7 @@ export default function Home() {
                             </div>
                             <div className='data-buttons'>
                                 <Link
-                                    to={`/game-details/${game._id}`}
+                                    to={`/game/details/${game._id}`}
                                     className='btn details-btn'
                                 >
                                     Details
