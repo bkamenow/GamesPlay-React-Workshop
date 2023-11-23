@@ -1,35 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as userService from "../services/userService";
+import AuthContext from "../contexts/authContext";
+import useForm from "../hooks/useForm";
 
-export default function RegisterPage() {
+const RegisterFormKeys = {
+    Email: "email",
+    Password: "password",
+    ConfirmPassword: "confirm-password",
+};
+
+export default function Register() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
-    function submitRegistration(e) {
-        e.preventDefault();
-
-        if (password !== confirmPassword) {
-            console.error("Passwords do not match");
-            return;
-        }
-
-        userService
-            .registerUser(email, password)
-            .then(() => {
-                navigate("/login");
-            })
-            .catch((error) => {
-                console.error("Error during registration:", error);
-            });
-    }
+    const { registerSubmitHandler } = useContext(AuthContext);
+    const { values, onChange, onSubmit } = useForm(registerSubmitHandler, {
+        [RegisterFormKeys.Email]: "",
+        [RegisterFormKeys.Password]: "",
+        [RegisterFormKeys.ConfirmPassword]: "",
+    });
 
     return (
         <section id='register-page' className='content auth'>
-            <form id='register' onSubmit={submitRegistration}>
+            <form id='register' onSubmit={onSubmit}>
                 <div className='container'>
                     <div className='brand-logo'></div>
                     <h1>Register</h1>
@@ -40,8 +32,8 @@ export default function RegisterPage() {
                         id='email'
                         name='email'
                         placeholder='maria@email.com'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={values[RegisterFormKeys.Email]}
+                        onChange={onChange}
                     />
 
                     <label htmlFor='pass'>Password:</label>
@@ -49,8 +41,8 @@ export default function RegisterPage() {
                         type='password'
                         name='password'
                         id='register-password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={values[RegisterFormKeys.Password]}
+                        onChange={onChange}
                     />
 
                     <label htmlFor='con-pass'>Confirm Password:</label>
@@ -58,8 +50,8 @@ export default function RegisterPage() {
                         type='password'
                         name='confirm-password'
                         id='confirm-password'
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={values[RegisterFormKeys.ConfirmPassword]}
+                        onChange={onChange}
                     />
 
                     <input

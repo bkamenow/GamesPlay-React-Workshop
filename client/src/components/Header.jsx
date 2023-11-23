@@ -1,13 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { checkIfUserIsLoggedIn, logoutUser } from "../services/userService";
+import AuthContext from "../contexts/authContext";
 
 export default function Header() {
-    const isLoggedIn = checkIfUserIsLoggedIn();
-
-    const handleLogout = () => {
-        logoutUser();
-        window.location.href = "/login";
-    };
+    const { isAuthenticated, username } = useContext(AuthContext);
 
     return (
         <header>
@@ -18,14 +14,14 @@ export default function Header() {
             </h1>
             <nav>
                 <Link to='/catalogue'>All Games</Link>
-                {isLoggedIn ? (
+                {isAuthenticated && (
                     <div id='user'>
                         <Link to='/game/create'>Create Game</Link>
-                        <Link to='/' onClick={handleLogout}>
-                            Logout
-                        </Link>
+                        <Link to='/logout'>Logout</Link>
                     </div>
-                ) : (
+                )}
+
+                {!isAuthenticated && (
                     <div id='guest'>
                         <Link to='/login'>Login</Link>
                         <Link to='/register'>Register</Link>
