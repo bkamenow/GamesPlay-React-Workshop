@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
-import * as authService from "./services/authService";
-import AuthContext from "./contexts/authContext";
+import { AuthProvider } from "./contexts/authContext";
+import Path from "./paths";
 
-import CreateGamePage from "./components/CreateGamePage";
-import EditGamePage from "./components/EditGamePage";
-import GameDetails from "./components/GameDetails";
-import Header from "./components/Header";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
-import Catalogue from "./components/Catalogue";
-import Logout from "./components/Logout";
+import GameCreate from "./components/game-create/GameCreate";
+import GameEdit from "./components/game-edit/GameEdit";
+import GameDetails from "./components/game-details/GameDetails";
+import Header from "./components/header/Header";
+import Login from "./components/login/Login";
+import Register from "./components/register/Register";
+import Home from "./components/home/Home";
+import Catalogue from "./components/game-list/Catalogue";
+import Logout from "./components/logout/Logout";
 
 function App() {
     const navigate = useNavigate({});
@@ -60,27 +60,22 @@ function App() {
     };
 
     return (
-        <AuthContext.Provider value={values}>
+        <AuthProvider>
             <div id='box'>
                 <Header />
+
                 <Routes>
-                    <Route path='/' element={<Home />} />
+                    <Route path={Path.Home} element={<Home />} />
+                    <Route path='/catalogue' element={<Catalogue />} />
+                    <Route path='/games/create' element={<GameCreate />} />
+                    <Route path='/games/:gameId' element={<GameDetails />} />
+                    <Route path={Path.GameEdit} element={<GameEdit />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/logout' element={<Logout />} />
-                    <Route path='/catalogue' element={<Catalogue />} />
-                    <Route path='/game/create' element={<CreateGamePage />} />
-                    <Route
-                        path='/game/edit/:gameId'
-                        element={<EditGamePage />}
-                    />
-                    <Route
-                        path='/game/details/:gameId'
-                        element={<GameDetails />}
-                    />
+                    <Route path={Path.Logout} element={<Logout />} />
                 </Routes>
             </div>
-        </AuthContext.Provider>
+        </AuthProvider>
     );
 }
 

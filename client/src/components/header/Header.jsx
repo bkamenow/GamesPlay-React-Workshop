@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../contexts/authContext";
+import AuthContext from "../../contexts/authContext";
 
 export default function Header() {
     const { isAuthenticated, username } = useContext(AuthContext);
@@ -16,7 +16,7 @@ export default function Header() {
                 <Link to='/catalogue'>All Games</Link>
                 {isAuthenticated && (
                     <div id='user'>
-                        <Link to='/game/create'>Create Game</Link>
+                        <Link to='/games/create'>Create Game</Link>
                         <Link to='/logout'>Logout</Link>
                     </div>
                 )}

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../contexts/authContext";
-import useForm from "../hooks/useForm";
+import AuthContext from "../../contexts/authContext";
+import useForm from "../../hooks/useForm";
 
 const RegisterFormKeys = {
     Email: "email",

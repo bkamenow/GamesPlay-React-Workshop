@@ -1,48 +1,52 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import * as gamesService from "../services/gamesService";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function EditGamePage() {
-    const [gameDetails, setGameDetails] = useState({});
-    const { gameId } = useParams();
+import * as gameService from "../../services/gameService";
+import useForm from "../../hooks/useForm";
+import { useEffect, useState } from "react";
+
+export default function GameEdit() {
     const navigate = useNavigate();
+    const { gameId } = useParams();
+    const [game, setGame] = useState({
+        title: "",
+        category: "",
+        maxLevel: "",
+        imageUrl: "",
+        summary: "",
+    });
 
     useEffect(() => {
-        gamesService.getOneGame(gameId).then(setGameDetails);
+        gameService.getOne(gameId).then((result) => {
+            setGame(result);
+        });
     }, [gameId]);
 
-    const handleEditSubmit = async (event) => {
-        event.preventDefault();
-
+    const editGameSubmitHandler = async (values) => {
         try {
-            const updatedGameData = {
-                title: event.target.title.value,
-                category: event.target.category.value,
-                maxLevel: event.target.maxLevel.value,
-                imageUrl: event.target.imageUrl.value,
-                summary: event.target.summary.value,
-            };
+            await gameService.edit(gameId, values);
 
-            await gamesService.updateGame(gameId, updatedGameData);
-
-            navigate(`/game/details/${gameId}`);
-        } catch (error) {
-            console.error("Error updating game:", error);
+            navigate("/games");
+        } catch (err) {
+            // Error notification
+            console.log(err);
         }
     };
 
-    return (
-        <section id='edit-page' className='auth'>
-            <form id='edit' onSubmit={handleEditSubmit}>
-                <div className='container'>
-                    <h1>Edit Game</h1>
+    const { values, onChange, onSubmit } = useForm(editGameSubmitHandler, game);
 
+    return (
+        <section id='create-page' className='auth'>
+            <form id='create' onSubmit={onSubmit}>
+                <div className='container'>
+                    <h1>Create Game</h1>
                     <label htmlFor='leg-title'>Legendary title:</label>
                     <input
                         type='text'
                         id='title'
                         name='title'
-                        defaultValue={gameDetails.title}
+                        value={values.title}
+                        onChange={onChange}
+                        placeholder='Enter game title...'
                     />
 
                     <label htmlFor='category'>Category:</label>
@@ -50,7 +54,9 @@ export default function EditGamePage() {
                         type='text'
                         id='category'
                         name='category'
-                        defaultValue={gameDetails.category}
+                        value={values.category}
+                        onChange={onChange}
+                        placeholder='Enter game category...'
                     />
 
                     <label htmlFor='levels'>MaxLevel:</label>
@@ -58,8 +64,10 @@ export default function EditGamePage() {
                         type='number'
                         id='maxLevel'
                         name='maxLevel'
+                        value={values.maxLevel}
+                        onChange={onChange}
                         min='1'
-                        defaultValue={gameDetails.maxLevel}
+                        placeholder='1'
                     />
 
                     <label htmlFor='game-img'>Image:</label>
@@ -67,16 +75,18 @@ export default function EditGamePage() {
                         type='text'
                         id='imageUrl'
                         name='imageUrl'
-                        defaultValue={gameDetails.imageUrl}
+                        value={values.imageUrl}
+                        onChange={onChange}
+                        placeholder='Upload a photo...'
                     />
 
                     <label htmlFor='summary'>Summary:</label>
                     <textarea
                         name='summary'
+                        value={values.summary}
+                        onChange={onChange}
                         id='summary'
-                        defaultValue={gameDetails.summary}
                     ></textarea>
-
                     <input
                         className='btn submit'
                         type='submit'
